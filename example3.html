@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<title>ccfolia - logs</title>
+<style>
+.main {
+font-size: 10pt;
+}
+.pc1 .textColumn {
+color:#8ddaff;
+}
+.pc2 .textColumn {
+color:#ff7d62;
+}
+.gm img, .talk img, .system img{
+display: none;
+}
+.talk {
+font-size: 10pt;
+opacity: 50%;
+/* display: none; */
+}
+.info {
+font-size: 10pt;
+opacity: 50%;
+/* display: none; */
+}
+.imgBox {
+color: gray;
+}
+#textBox {
+font-size: 11pt;
+}
+.imgColumn {
+width: 70px;
+}
+.imgColumn img {
+height: 45px;
+width: 45px;
+object-fit: cover;
+background-color: white;
+}
+#frontView {
+height: 800px;
+background: no-repeat url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbcvcnB%2FbtqYB6vhaVs%2Frak7KYz8cQvK8vvB51wLBk%2Fimg.jpg");
+background-size: cover;
+resize: both;
+}
+#backView {
+background: no-repeat url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbcvcnB%2FbtqYB6vhaVs%2Frak7KYz8cQvK8vvB51wLBk%2Fimg.jpg");
+background-size: cover;
+filter: blur(8px);
+height: 100%;
+width: 100%;
+resize: both;
+-webkit-filter: blur(8px);
+z-index: -1;
+padding: 0;
+margin: 0;
+border: none;
+}
+#pc1 {
+background: no-repeat url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtZw8N%2FbtqYwgMjHXW%2F3MxKiteCTnrVLoyzv9ZiB0%2Fimg.png");
+background-size: contain;
+background-position: center bottom;
+}
+#pc2 {
+background: no-repeat url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdmC6E3%2FbtqYDkfKsyt%2FUK2S9U3EHkjHypT5XLKvR1%2Fimg.png");
+background-size: contain;
+background-position: center bottom;
+}
+.card {
+min-height: 100px;
+padding-left: 20px;
+padding-right: 20px;
+}
+</style>
+
+  <script>
+$( document ).ready(function() {
+/***default keyword
+char : *
+bg : #
+***/
+var charMap1 = new Map();
+charMap1.set("기본","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtZw8N%2FbtqYwgMjHXW%2F3MxKiteCTnrVLoyzv9ZiB0%2Fimg.png");
+charMap1.set("슬픈","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FoYPjv%2FbtqYE62xEJH%2F8rKpKqM3LoJwFxM4TtFa70%2Fimg.png");
+charMap1.set("조금부끄","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbeRkJi%2FbtqYDlexjXS%2FgmFrdj2qTfzShIcS6iIDY1%2Fimg.png");
+charMap1.set("삐짐","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FK3ylp%2FbtqYxoJ6QYt%2Flb2GGWhILtAcoE6jn5ugs1%2Fimg.png");
+charMap1.set("활짝","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F2Bd9V%2FbtqYLzv5NQt%2FQcFVkicuWh6KcRWUUaAqx1%2Fimg.png");
+charMap1.set("화남","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcFtz9V%2FbtqYB5Xn7Of%2FIkV3HDEajhnTQTX4jPXVnK%2Fimg.png");
+charMap1.set("미소","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FYpij3%2FbtqYJ8MfIlF%2FChAu3dkTt8uKX8zA9BH8jK%2Fimg.png");
+
+
+var charMap2 = new Map();
+charMap2.set("기본","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdmC6E3%2FbtqYDkfKsyt%2FUK2S9U3EHkjHypT5XLKvR1%2Fimg.png");
+charMap2.set("미소","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbYWsIW%2FbtqYDjuqkG6%2FbY2IEG1TZIUDmLZhX7CUsK%2Fimg.png");
+charMap2.set("슬픈미소","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcbmdFf%2FbtqYxqgNQGJ%2FvwNmGj0yd0kAS6069iSeKK%2Fimg.png");
+charMap2.set("눈감고웃음","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmTRKS%2FbtqYE6VMzGl%2FqQDKsxg4kpgp8w11U3KtSK%2Fimg.png");
+charMap2.set("슬픔","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc6bKsM%2FbtqYwhdmTQm%2FGwNTgxSr1GG35G7DOGttD1%2Fimg.png");
+
+var bgMap = new Map();
+bgMap.set("침대","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FLra7V%2FbtqYLy42pEb%2Fwt4sya7ULN3SmK5FYqKS0K%2Fimg.jpg");
+bgMap.set("방1","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F0xRHQ%2FbtqYJ86AObk%2F6xkpml69EXIrs1h6EquJFK%2Fimg.jpg");
+bgMap.set("방2","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fu2ucU%2FbtqYAtEdeCY%2FtPIa6utsmP4nfymdw14WCK%2Fimg.jpg");
+bgMap.set("넓은방","https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FD1cc9%2FbtqYIklWQ6s%2FVt8TTMo2o5LJP06qJ2CxN1%2Fimg.jpg");
+
+//main character name, add thumbnail
+$(".pc1 img").attr("src", "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FuZw7x%2FbtqYvdhMsq3%2FY6FyKqJYkhqW2ky3HIofN1%2Fimg.png");
+$(".pc2 img").attr("src", "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FwqGWT%2FbtqYLyRx9is%2FDJckzbnWL8AXx5W8R2ORgK%2Fimg.png");
+//change column style
+$(".main:contains('失敗')").addClass("bg-danger");
+$(".main:contains('成功')").addClass("bg-info"); 
+$(".main").hover(function() {
+var val = $(this)[0];
+var attrArr = val.attributes[0].value.split(" ");
+var txt = val.children[1].innerHTML;
+//change character standing image and background image
+var command;
+if(txt.includes("*")){
+command=txt.split("*").reverse()[0].replace("</div>","").trim();
+//console.log(command);
+var charMap = new Map();
+var targetPc;
+for(var i in attrArr){
+var attr = attrArr[i];
+if(attr == "pc1"){targetPc = attr;charMap = charMap1;}
+if(attr == "pc2"){targetPc = attr;charMap = charMap2;}
+}
+if (targetPc !== undefined && targetPc.length > 0){if (command == "퇴장") {
+$("#"+targetPc).attr("style", "background-image: none");
+}else if (charMap.has(command)){
+$("#"+targetPc).attr("style", "background-image: url('"+charMap.get(command)+"')");
+}
+}} else if (txt.includes("#")){
+command = txt.split("#").reverse()[0].replace("</div>","").trim();
+//console.log(command);
+var bgKey = bgMap.get(command);
+if(bgKey !== undefined && bgKey.length > 0 && bgMap.has(command)){
+$("#frontView").attr("style", "background-image: url('"+bgMap.get(command)+"')");
+$("#backView").attr("style", "background-image: url('"+bgMap.get(command)+"')");
+}
+}
+//change text box message by hover text
+document.getElementById("textBox").innerHTML = txt;
+});
+});
+</script>
+</head>
+  <body>
+<div id="backView" class="position-fixed"></div>
+<div class ="container-fluid">
+	<div class="row">
+		<div class="view col-lg-8 col-sm-6 col-xs-12" >
+			<div id="frontView" class="position-fixed row col-9 justify-content-center">
+				<div id="pc1" class="col-xl-4 col-lg-5 col-xs-6"></div>
+				<div id="pc2" class="col-xl-4 col-lg-5 col-xs-6"></div>
+			</div> <!-- [배경] 만나면 img src change -->
+			<div class="row">
+				<div class="card position-fixed w-50 bg-dark text-white fixed-bottom shadow">
+					<div class="card-body">
+						<h6 id="textHead" class="card-title"></h6>
+						<p id="textBox" class="card-text"></p>
+					</div>
+				</div>
+			</div>
+	</div>
+	<div class="chat col-lg-4 col-sm-6 col-xs-12 pull-right table-responsive">
+	<table class="table table-dark table-hover">
+
+	<tbody>
+
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        오셨나요 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        캐릭터 등록해주세요~~ 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	  
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	           
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	           
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">system<br>
+        [ 이안 ] HP : 0 → 0 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        안녕하세요. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        코코포리아 로그 변환 테스트하려고 방을 만들었습니다. 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        아하 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        이안은 아하라고 말했습니다. 무표정으로 아하라고 하나요? 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        안녕..? *미소 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        신하나는 웃으며 인사합니다. 처음 보는 낯선 친구가 반가운가봅니다ㅋ 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ... 안녕. *조금부끄 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        거참...귀엽게 인사하네요. 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        하...귀엽다....................... 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        ............................. 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        저기..이름이 뭐야? *기본 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ...이안. *기본 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ...이안? 나는 신하나라고 해.<br>사실...여기 어떻게 오게 된건지 잘 모르겠는데. 혹시 아는 게 있어? *슬픔 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        신하나가 난처하게 묻습니다. 이안은 이곳이 어떤 곳인지 알까요? <br>&lt;지능 판정&gt; 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ..나도 몰라. *삐짐 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        1d100 1D100&lt;=60  (1D100) ＞ 20
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        (어어...기분이 별로인 것 같은데...) 그렇구나.... *슬픈미소 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        1D100&lt;=70  (1D100&lt;=70) ＞ 49 ＞ 成功
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        하나는 이안의 기분을 달래주고자, 자기가 아는 사실을 조금이라도 얘기해보자는 생각이 듭니다. 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ...있지. 이안보다 내가 먼저 정신을 차려서, 이 집을 둘러봤거든. 괜찮으면.... 따라올래? *미소 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ....그래. 네가 그렇다면야. *조금부끄 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ..응. (손 내밀기) *눈감고웃음 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	    
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	            
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        이안의 손을 잡고 다른 방으로 이동합니다. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	            
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	           
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	      
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        *기본 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">STUDYROOM A<br>
+        전에 floorPlan 한달 결제하고 만들어둔 방 <div class="badge badge-light text-wrap">#방1</div>
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        작은 방입니다. 누군가 공부하는 공간 같네요. 전에 Floorplan 한달 결제를 하고 만들어본 방인데요. 이렇게 또  써먹네요. 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        이 방은 뭐야? 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        공부방 같아. 이정도 크기의 방이 여기 말고 하나 더 있더라. *기본 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        잘은 모르지만... 방 주인이 우주를 좋아하나봐. 여기저기 사진이 붙어있는거 보면. 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ...그런데 내가 왜 너랑 여기에 같이 있는거지? *조금부끄 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        어어...? 글..쎄? 나도 여기가 어딘지 잘 몰라서... 이 집, 문도 잠겨 있어서 나갈 수가 없어.... *슬픔 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        나가면 안되니까 잠궈놨죠. 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ..그걸 말이라고해? 아니.... 도대체가  *화  
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        잠깐 장면 전환하는 것도 보여줄 때까지 기다려줘요 이안. 나의 아기고양이..^^ 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        허 *화남 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ...어떻게 될지는 모르지만, 혹시라도 날 어두워질 때까지 못나가면... 이 방은 이안이 쓸래? *슬픈미소 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	  
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">BEDROOM A<br>
+        이것은 침대입니다. 매트릭스가 두꺼워서 편안해보이네요. 예, 아무말이나 적고 있어요. <div class="badge badge-light text-wrap">#침대</div> 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        아니.. 어딘지도 모르는데 그냥 여기에 계속 있으라는거야? *삐짐 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        우리 말고는 아무도 없는 것 같고...사람이 사용한 흔적도 없어서..  
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        넘 웃기다... 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        아무것도 조사하지 않고 이러려니 낯설고 어색해; 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	  
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	   
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">ROOM C<br>
+        잡다하게 뭐가 많은 방이에요. 열심히 꾸며놨네요. <div class="badge badge-light text-wrap">#넓은방</div>
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        .... (이곳저곳을 기웃거린다.) 무슨.. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        상자가 많이 쌓여 있습니다. <br>뭐가 들어있을까요?<br><br>&lt;관찰력 판정&gt; 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        뭐가 이렇게 많아? (손으로 대강 치워본다.)<br> 
+      </td>
+    </tr>
+    
+    <tr class="pc1 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        1D100&lt;=70 (1D100&lt;=70) ＞ 91 ＞ 失敗
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ㅋㅋㅋㅋㅋㅋㅋㅋ 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ㅇ ㅏ 이게 잡담이 여ㅓ기잇구나 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        이안이 상자를 살펴봐도 잡다하게 풀이나 가위같은 게 들어 있을 뿐, 이곳을 나갈만한 단서는 보이지 않습니다. 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        ㅋㅋㅋㅋㅋㅋㅋㅇㅇㅇ 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        뭐 보고 있어? *기본 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        뭐가 있나 보는데 별 거 없어. 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        음...~ *슬픈미소 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	    
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	     
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	   
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">STUDYROOM B<br>
+        마찬가지로Floorplan으로 만들어둔 방이죠. 우주를 좋아하나봅니다. 잡다하게 뭐가 많네. <div class="badge badge-light text-wrap">#방2</div> 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        아 졸립다 슬슬 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        (뭐든 일단 해보자 싶은지 뒤적거려본다.) 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        이시간까지 함께 해주셔서 감사합니다.. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        &lt;자료조사 판정&gt; 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        1D100&lt;=60 (1D100&lt;=60) ＞ 11 ＞ 成功
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        대박 11 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        책상에서 두꺼운 서적 사이에 낀 얇은 노트를 발견합니다. 노트를 펼쳐보면 삐뚤삐뚤하게 그려진 도면입니다. 어색하고 장난스러워보이기까지 해요. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        자세히 보니까, 방 구조가 마치 이 집 같다는 생각이 듭니다. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        &lt;관찰력 판정&gt; 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        뭐야, 이건? 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        1D100&lt;=70 (1D100&lt;=70) ＞ 12 ＞ 成功
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        따로굴려야하는구만 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        ㅋㅋㅋㅋ 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        코코포 익히는중 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        다른 선은 다 까맣게 그어져있는데, 문 하나만 빨간색으로 칠해져 있어요. 그런데 이 문 잘 보면 바깥쪽으로 나갈 수 있게 되어 있고... 문 위치가 지금 우리가 있는 방 같아요. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        비밀의 문이라도 있나봅니다.  
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        ㅋㅋㅋ 하... 먼가 테스트긴한데 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        이안이 나가고싶어해서 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        나갈 문 하나 만들어줌 (머냐 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ? 뭐지? 이거 비밀 문이라도 있는건가? *기본 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	    
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	  
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        책장 옆에 스위치가 보입니다. 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        &lt;근력 판정&gt; 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        근력도 안넣었을걸 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ...비밀문? 이곳을 나갈 방법이 있는거야? *미소 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        1D100&lt;=50 (1D100&lt;=50) ＞ 60 ＞ 失敗
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        스위치가 뻑뻑한지 어린 이안의 힘으로는 꼼짝을 안합니다. 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ...음? 이거 누르려고? *기본 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        1D100&lt;=50 (1D100&lt;=50) ＞ 35 ＞ 成功
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ...우.. *조금부끄 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        나도 할 수 있었어. *삐짐 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        뒤에 서있던 신하나가 스위치를 누릅니다. 스위치를 누르자 책꽂이가 돌아가더니, 아 눈부셔.... <br>밖으로 향하는 출구잖아요! 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        ...! *기본 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        응, 하루종일 아무것도 못 먹어서, 힘을 못 썼을거야. *미소 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        열렸어! *미소 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ......밖이야! 아, 다행이야. 여기서 나갈 수 있겠어. *기본 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        기엽다 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        천사의 미소... 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        ㅠㅠ 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        다행이다. *활짝 
+      </td>
+    </tr>
+    
+    <tr class="pc2 main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">신하나<br>
+        ....응, 정말로. *눈감고웃음 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	  
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+      <pre>
+	  <pre>	    
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        이안과 하나는 이곳을 무사히 빠져나옵니다. 다행이죠.. 늦게까지 함께 해주셔서 감사합니다~^^ 
+      </td>
+    </tr>
+    
+    <tr class="gm main"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">이안<br>
+        와~ 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        ^ㅡㅡㅡㅡㅡㅡㅡ^ 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        감사합니당 
+      </td>
+    </tr>
+    
+    <tr class="gm talk"><td class="imgColumn"><img src="" class="rounded img-responsive" alt="..."></td><td class="textColumn">
+        오른쪽 위에 보면 톱니바퀴 모양 있죵. 그거 누르면 로그 출력할 수 있어. 
+      </td>
+    </tr>
+    
+  </tbody></table></div></div></div></body>
+</html>
